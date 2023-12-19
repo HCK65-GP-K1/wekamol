@@ -6,8 +6,6 @@ const Controller = require("../controllers/controller");
 // const { isLoggedIn } = require("../middleware/authentication");
 
 router.get("/");
-router.post("/register", Controller.register);
-router.post("/login");
 
 // router.use("/users", isLoggedIn, user);
 
