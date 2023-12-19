@@ -4,6 +4,7 @@ const { Game, User } = require("../models/");
 const { Op } = require("sequelize");
 
 class Controller {
+
   static async ehehe(req, res, next) {
     try {
       const message2 = "ehehehehehhehehe";
@@ -45,6 +46,21 @@ class Controller {
       let access_token = signToken({ id: user.id })
 
       res.status(200).json({ access_token })
+    } catch (error) {
+      next(error);
+    }
+
+  }
+
+  
+  static async register(req, res, next) {
+    try {
+      const { username, password, email } = req.body
+      const createdUser = await User.create({ username, password, email });
+      res.status(200).json({
+        "username": createdUser.username,
+        "email": createdUser.email
+      });
     } catch (error) {
       next(error);
     }
