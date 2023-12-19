@@ -52,7 +52,6 @@ class Controller {
 
   }
 
-  
   static async register(req, res, next) {
     try {
       const { username, password, email } = req.body
