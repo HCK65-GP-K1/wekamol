@@ -49,7 +49,6 @@ class Controller {
     } catch (error) {
       next(error);
     }
-
   }
 
   static async register(req, res, next) {
@@ -60,6 +59,27 @@ class Controller {
         "username": createdUser.username,
         "email": createdUser.email
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getUserProfile(req, res, next) {
+    try {
+      const { id } = req.user
+      if(!id) {
+        throw {
+          name: "BadInput"
+        }
+      }
+      const profile = await User.findByPk(id);
+      if(!profile) {
+        throw {
+          name: "notFound"
+        }
+      }
+
+      res.status(200).json(profile);
     } catch (error) {
       next(error);
     }
