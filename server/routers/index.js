@@ -9,8 +9,6 @@ router.get("/");
 
 router.use('/users', user)
 
-router.post("/register", Controller.register);
-
 // router.use("/users", isLoggedIn, user);
 
 module.exports = router;
