@@ -6,6 +6,7 @@ const user = express.Router();
 user.get("/", Controller.ehehe); //forMockTesting
 user.post("/login", Controller.login);
 user.post("/register", Controller.register);
+user.post("/resultGame", isLoggedIn, Controller.resultGame);
 user.get("/profile", isLoggedIn, Controller.getUserProfile);
 
 module.exports = user;
