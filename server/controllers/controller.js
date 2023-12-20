@@ -4,7 +4,6 @@ const { Game, User } = require("../models/");
 const { Op } = require("sequelize");
 
 class Controller {
-
   static async ehehe(req, res, next) {
     try {
       const message2 = "ehehehehehhehehe";
@@ -19,33 +18,29 @@ class Controller {
       const { email, password } = req.body;
       if (!email || !password) {
         throw {
-          name: "InvalidInput"
-        }
+          name: "InvalidInput",
+        };
       }
       const user = await User.findOne({
         where: {
-          [Op.or]: [
-            { email },
-            { password }
-          ]
-        }
-      })
+          [Op.or]: [{ email }, { password }],
+        },
+      });
       if (!user) {
         throw {
-          name: "BadInput"
-        }
+          name: "BadInput",
+        };
       }
 
-      const isPasswordsValid = comparePwDecrypted(password, user.password)
+      const isPasswordsValid = comparePwDecrypted(password, user.password);
       if (!isPasswordsValid) {
         throw {
-          name: "BadInput"
-        }
-
+          name: "BadInput",
+        };
       }
-      let access_token = signToken({ id: user.id })
+      let access_token = signToken({ id: user.id });
 
-      res.status(200).json({ access_token })
+      res.status(200).json({ access_token });
     } catch (error) {
       next(error);
     }
@@ -53,11 +48,11 @@ class Controller {
 
   static async register(req, res, next) {
     try {
-      const { username, password, email } = req.body
+      const { username, password, email } = req.body;
       const createdUser = await User.create({ username, password, email });
       res.status(200).json({
-        "username": createdUser.username,
-        "email": createdUser.email
+        username: createdUser.username,
+        email: createdUser.email,
       });
     } catch (error) {
       next(error);
@@ -66,17 +61,17 @@ class Controller {
 
   static async getUserProfile(req, res, next) {
     try {
-      const { id } = req.user
-      if(!id) {
+      const { id } = req.user;
+      if (!id) {
         throw {
-          name: "BadInput"
-        }
+          name: "BadInput",
+        };
       }
       const profile = await User.findByPk(id);
-      if(!profile) {
+      if (!profile) {
         throw {
-          name: "notFound"
-        }
+          name: "notFound",
+        };
       }
 
       res.status(200).json(profile);
@@ -84,7 +79,35 @@ class Controller {
       next(error);
     }
   }
-}
 
+  static async resultGame(req, res, next) {
+    try {
+      const { id } = req.user;
+      const roomName = "room1"; //NANTI DINAMIS KALO PERLU
+      const { score } = req.body;
+
+      //TAMBAH KE DB
+      const addedScore = await Game.create({
+        UserId: id,
+        roomName: roomName,
+        score: score,
+      });
+
+      let findUser = await User.findByPk(id);
+      if (!findUser) throw { name: "notFound" };
+
+      if (findUser.highestScore < score) {
+        await findUser.update({ highestScore: score });
+      }
+
+      res.status(200).json({
+        addedScore,
+        message: `User ${findUser.username}'s highest score is now ${findUser.highestScore}`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+}
 
 module.exports = Controller;
