@@ -1,0 +1,19 @@
+[
+  {
+    "username": "Nell",
+    "email": "nell@mail.com",
+    "password": "12345"
+  },
+  {
+    "username": "John",
+    "email": "john@mail.com",
+    "password": "12345",
+    "highestScore": 0
+  },
+  {
+    "username": "Shin",
+    "email": "shin@mail.com",
+    "password": "12345",
+    "highestScore": 0
+  }
+]
