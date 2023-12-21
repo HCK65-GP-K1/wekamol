@@ -101,7 +101,7 @@ class Controller {
       //TAMBAH KE DB
       const addedScore = await Game.create({
         UserId: id,
-        roomName: room,
+        roomName: room || "room 1",
         score: score,
       });
 
