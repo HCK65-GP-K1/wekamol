@@ -3,12 +3,11 @@ const router = express.Router();
 const user = require("./user");
 const Controller = require("../controllers/controller");
 
-// const { isLoggedIn } = require("../middleware/authentication");
+router.get("/", Controller.ehehe);
 
-router.get("/");
+router.get("/leaderboard", Controller.leaderBoard);
 
-router.use('/users', user)
+router.use("/users", user);
 
-// router.use("/users", isLoggedIn, user);
 
 module.exports = router;

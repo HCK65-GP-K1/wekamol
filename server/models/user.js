@@ -12,6 +12,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Game, { foreignKey: "UserId" });
     }
+
+    static async leaderBoard() {
+      try {
+        let instance = await User.findAll({
+          order: [["highestScore", "DESC"]],
+          attributes: { exclude: ["createdAt", "updatedAt", "password"] },
+        });
+        return instance;
+      } catch (error) {
+        throw error;
+      }
+    }
   }
   User.init(
     {

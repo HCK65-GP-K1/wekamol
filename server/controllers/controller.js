@@ -67,7 +67,9 @@ class Controller {
           name: "BadInput",
         };
       }
-      const profile = await User.findByPk(id);
+      const profile = await User.findByPk(id, {
+        attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+      });
       if (!profile) {
         throw {
           name: "notFound",
@@ -80,16 +82,26 @@ class Controller {
     }
   }
 
+  static async leaderBoard(req, res, next) {
+    try {
+      let leaderBoard = await User.leaderBoard();
+
+      res.status(200).json(leaderBoard);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async resultGame(req, res, next) {
     try {
       const { id } = req.user;
-      const roomName = "room1"; //NANTI DINAMIS KALO PERLU
+      const { room } = req.body;
       const { score } = req.body;
 
       //TAMBAH KE DB
       const addedScore = await Game.create({
         UserId: id,
-        roomName: roomName,
+        roomName: room,
         score: score,
       });
 
